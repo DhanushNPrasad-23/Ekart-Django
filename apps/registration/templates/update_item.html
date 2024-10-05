@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Edit Item Details</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Use crispy form to handle layout and form groups -->
+                        {{ form|crispy }}
+
+                        <div class="d-grid gap-2 mt-4">
+                            <!-- Submit button with Bootstrap classes -->
+                            <button type="submit" class="btn btn-success btn-lg">
+                                Update Item
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

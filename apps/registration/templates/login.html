@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Card for login form -->
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="card-title"><i class="fas fa-user-lock"></i> Login</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-lg btn-success" type="submit">
+                                <i class="fas fa-sign-in-alt"></i> LOGIN
+                            </button>
+                        </div>
+                       
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p class="mb-2">Don't have an account?</p>
+                        <a href="{% url 'register_user' %}" class="btn btn-outline-success btn-lg">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-footer text-success text-center">
+                    <h4>SUPER USER </h4>
+                    <p>Username = dhanu </p>
+                    <p>Password =  123</p>
+                    <h4>CUSTOMER USER </h4>
+                    <p>Username =  ashwin</p>
+                    <p>Password =  123</p>
+                 </div>
+                <!-- Error Messages -->
+                {% if form.errors %}
+                    <div class="card-footer text-danger text-center">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

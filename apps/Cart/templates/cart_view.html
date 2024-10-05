@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if not request.user.is_superuser %}
+
+    <h2 class="text-center mb-4" style="color: #007bff;">Your Shopping Cart</h2>
+
+    {% else %}
+    <h2 class="text-center mb-4" style="color: #007bff;"> Shopping Cart Looks Like This</h2>
+
+
+    {% endif %}
+
+    
+    <div class="row justify-content-center">
+        <!-- Check if there are items in the cart -->
+        {% if res %}
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-sm p-4">
+                <!-- Loop through the items in the cart -->
+                {% for item in res %}
+                <div class="row align-items-center border-bottom pb-3 mb-3">
+                    <div class="col-md-3 text-center">
+                        <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" class="img-fluid rounded" style="height: 100px; width: 100px; object-fit: cover; border: 2px solid #007bff;">
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'item_view' item.id %}"><h5>{{ item.item_name }}</h5></a>
+                        <p class="text-muted">{{ item.item_price }} &#8377;</p>
+                    </div>
+                    {% if not request.user.is_superuser %}
+                    <div class="col-md-5 d-flex justify-content-around">
+                        <a href="{% url 'buy_page' item.id %}" class="btn btn-outline-success btn-sm">Buy Now</a>
+                        <a href="{% url 'cartdelete' item.id %}" class="btn btn-outline-danger btn-sm">Remove</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-5 d-flex justify-content-around">
+                        <a href="{% url 'update_delete_item_delete' item.id %}" class="btn btn-outline-success btn-sm">Update</a>
+                        <a href="{% url 'update_delete_item_update' item.id %}" class="btn btn-outline-danger btn-sm">delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <!-- Button to delete all items from the cart -->
+                {% if not request.user.is_superuser %}
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    {% comment %} <a href="#" class="btn btn-primary">Buy All</a> {% endcomment %}
+                    <a href="{% url 'cartdeleteall' %}" class="btn btn-danger">Remove All</a>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+        {% else %}
+        <!-- If the cart is empty -->
+        <div class="col-12">
+            <div class="alert alert-warning text-center shadow-sm p-4">
+                <h4>Your cart is empty!</h4>
+                <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go to Shop</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        background-color: #f8f9fa;
+    }
+    .card h5 {
+        color: #343a40;
+        font-weight: 600;
+    }
+    .btn-outline-success:hover, .btn-outline-danger:hover {
+        color: white;
+    }
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-primary, .btn-danger {
+        width: 45%;
+    }
+</style>
+
+{% endblock content %}

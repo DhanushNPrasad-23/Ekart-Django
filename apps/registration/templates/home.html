@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for item in items %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ item.item_image.url }}" class="d-block w-100" alt="{{ item.item_name }}" style="object-fit: cover; height: 500px;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-center bg-dark bg-opacity-50 p-4 rounded">
+                        <a href="{% url 'item_view' item.id %}" class="text-light text-decoration-none">
+                            <h1 class="display-4 fw-bold">{{ item.item_name }}</h1>
+                        </a>
+                        <p class="lead">{{ item.item_description }}</p>
+                        <a href="{% url 'item_view' item.id %}" class="btn btn-primary btn-lg">Shop Now</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <h5 class="mb-3">Categories</h5>
+            <div class="list-group">
+                <a href="{% url 'home' %}" class="list-group-item list-group-item-action">All</a>
+                <a href="{% url 'home_with_type' 'F' %}" class="list-group-item list-group-item-action">Fashion</a>
+                <a href="{% url 'home_with_type' 'G' %}" class="list-group-item list-group-item-action">Grocery</a>
+                <a href="{% url 'home_with_type' 'A' %}" class="list-group-item list-group-item-action">Appliances</a>
+            </div>
+
+            {% comment %} <h5 class="mt-4">Filters</h5>
+            <form class="p-3 border rounded">
+                <div class="form-group mb-3">
+                    <label for="priceRange" class="form-label">Price Range</label>
+                    <input type="range" class="form-range" id="priceRange" min="0" max="5000" step="100">
+                </div>
+                <button type="submit" class="btn btn-outline-primary w-100">Apply Filters</button>
+            </form> {% endcomment %}
+        </div>
+
+        <!-- Items Section -->
+        <div class="col-lg-9">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for item in mesg %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 rounded overflow-hidden">
+                        <img src="{{ item.item_image.url }}" class="card-img-top" alt="{{ item.item_name }}" style="height: 250px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <a href="{% url 'item_view' item.id %}" class="text-dark text-decoration-none">
+                                <h5 class="card-title">{{ item.item_name }}</h5>
+                            </a>
+                            <p class="card-text">{{ item.item_description }}</p>
+                            <p class="text-price fw-bold text-primary">Price: ₹{{ item.item_price }}</p>
+                            {% if not request.user.is_superuser %}
+                            <a href="{% url 'cartadd' item.id %}" class="btn btn-primary mt-2 w-100">Add to Cart</a>
+                            <a href="{% url 'item_view' item.id %}" class="btn btn-success mt-2 w-100">Buy Now</a>
+                            {% else %}
+                            <a href="#" class="btn btn-secondary mt-2 w-100">Item Count: {{ item.id }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Alert Messages -->
+            {% if messages %}
+            <div class="container mt-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

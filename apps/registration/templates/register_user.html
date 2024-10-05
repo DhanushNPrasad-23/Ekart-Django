@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        {% comment %} {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %} {% endcomment %}
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">User-Registration</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-lg btn-success" type="submit">
+                        <i class="fas fa-check-circle"></i> Submit
+                    </button>
+                </div>
+            </form>
+
+          
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

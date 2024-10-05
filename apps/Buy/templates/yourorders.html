@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Your Orders</h2>
+
+    <!-- Check if there are any orders -->
+    {% if orders %}
+        <table class="table table-hover table-bordered mt-4">
+            <thead class="thead-light">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Order Status</th>
+                    <th>Order Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.item.item_name }}</td>
+                    <td>&#8377;{{ order.item.item_price }}</td>
+                    <td>
+                        {% if order.status == 'Pending' %}
+                            <span class="badge badge-warning text-dark">Pending</span> <!-- Set text to dark for better visibility -->
+                        {% elif order.status == 'Shipped' %}
+                            <span class="badge badge-success text-dark">Shipped</span> <!-- Ensure text is white for contrast -->
+                        {% elif order.status == 'Delivered' %}
+                            <span class="badge badge-danger text-dark">Delivered</span> <!-- Ensure text is white for contrast -->
+                        {% endif %}
+                    </td>
+                    
+                    <td>{{ order.order_date }}</td>
+                    <td>
+                        <a href="{% url 'item_view' order.item.id %}" class="btn btn-info btn-sm">View Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="mt-4">You have no orders at the moment.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+
+

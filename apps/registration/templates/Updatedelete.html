@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #007bff;">Manage Your Items</h2>
+
+    <div class="row justify-content-center">
+        <!-- Check if there are items in the cart -->
+        {% if res %}
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-lg p-4">
+                <!-- Loop through the items in the cart -->
+                {% for item in res %}
+                <div class="row align-items-center border-bottom pb-3 mb-3">
+                    <div class="col-md-3 text-center">
+                        <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" class="img-fluid rounded" style="height: 100px; width: 100px; object-fit: cover; border: 3px solid #007bff;">
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="font-weight-bold">{{ item.item_name }}</h5>
+                        <p class="text-muted">{{ item.item_price }} &#8377;</p>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-around">
+                        <a href="{% url 'update_delete_item_update' item.id %}" class="btn btn-outline-info btn-sm">Update</a>
+                        <a href="{% url 'update_delete_item_delete' item.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Button to delete all items from the cart -->
+                
+            </div>
+        </div>
+        {% else %}
+        <!-- If the cart is empty -->
+        <div class="col-12">
+            <div class="alert alert-warning text-center shadow-lg p-4">
+                <h4>Your Item  is empty!</h4>
+                <a href="{% url 'home' %}" class="btn btn-primary mt-3">Start Adding</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Inline CSS for customized styles -->
+<style>
+    .card {
+        border: none;
+        background-color: #f1f4f9;
+        border-radius: 15px;
+    }
+    .card h5 {
+        color: #343a40;
+        font-weight: bold;
+    }
+    .btn-outline-info:hover {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-danger, .btn-block {
+        width: 100%;
+        font-size: 1.1rem;
+    }
+    .img-fluid {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+{% endblock content %}
